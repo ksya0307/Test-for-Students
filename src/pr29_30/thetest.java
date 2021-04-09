@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +14,16 @@ public class thetest extends JFrame{
     private JScrollPane scrollPane;
     private JFrame frame;
     public JRadioButton answer;
-    public thetest(int id_test) throws ClassNotFoundException {
+    public int id_user;
+    public int rightanswers;
+    public thetest(int id_test, int id_user) throws ClassNotFoundException {
         frame = new JFrame("Тест " + id_test);
+
+
+        //получить id юзер
+        this.id_user = id_user;
+
+
         JPanel panel = new JPanel();
 
         scrollPane = new JScrollPane(panel);
@@ -79,11 +88,12 @@ public class thetest extends JFrame{
         }
 
         JButton submit = new JButton("Завершить тест");
+        JLabel countrightanswers = new JLabel();
         panel.add(submit);
         ActionListener submitClick = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int rightanswers =0;
+                rightanswers =0;
                 for (int i = 0; i < btn_grp.length; i++)
                 {
                     for (Enumeration<AbstractButton> buttons = btn_grp[i].getElements(); buttons.hasMoreElements();) {
@@ -94,7 +104,7 @@ public class thetest extends JFrame{
                         try {
                             if(button.isSelected()){
                                 if(ans.isTrue(Integer.parseInt(button.getName()), Integer.parseInt(quests[i].getName()))){
-                                    System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
+                                    //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
                                     button.setBackground(Color.GREEN);
                                     rightanswers++;
                                 }
@@ -109,11 +119,17 @@ public class thetest extends JFrame{
 
                     }
                 }
-                System.out.println("Количество правильных ответов "+rightanswers);
-
+                JOptionPane.showMessageDialog(null,"Количество правильных ответов - "+rightanswers);
+                try {
+                    InsertResultUser(id_user,id_test,rightanswers);
+                } catch (ClassNotFoundException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                }
             }
         };
         submit.addActionListener(submitClick);
+
+        getUserResult getUserResult = new getUserResult(this.id_user);
         frame.add(scrollPane);
         frame.setBounds(400, 300, 700, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -121,4 +137,40 @@ public class thetest extends JFrame{
 
     }
 
+    private void InsertResultUser(int id_user,int id_test, int result) throws ClassNotFoundException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        String hostname = "localhost";
+        String user = "ksyaVova";
+        String pass = "sys";
+        String sid = "orcl";
+
+        Connection con = null;
+        PreparedStatement st = null;
+        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
+
+        try {
+            String sql = "insert into results(iduser, idtest,result) values ("+this.id_user+", "+id_test+", "+rightanswers+")";
+
+            con = DriverManager.getConnection(url, user, pass);
+
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+
+        } catch (SQLException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+
+                try {
+                    con.close();
+                } catch (SQLException var30) {
+                    System.out.println(var30.toString());
+                }
+
+            }
+
+        }
+    }
 }
+

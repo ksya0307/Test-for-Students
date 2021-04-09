@@ -43,7 +43,8 @@ public class choosetest extends JFrame{
                 thetest test = null;
                 try {
                     id_test = tests.getSelectedIndex()+1;
-                    test = new thetest(id_test);
+                    test = new thetest(id_test, id_user);
+                    frame.setVisible(false);
                 } catch (ClassNotFoundException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }

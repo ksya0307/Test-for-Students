@@ -27,7 +27,7 @@ public class User {
 
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            System.out.print("\n");
+
             if(rs!=null){
                 while(rs.next()){
                     this.id=rs.getInt("id");
@@ -51,7 +51,6 @@ public class User {
 
                 try {
                     con.close();
-                    return true;
                 } catch (SQLException var30) {
                     System.out.println(var30.toString());
                 }

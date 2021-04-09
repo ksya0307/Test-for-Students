@@ -3,7 +3,7 @@ package pr29_30;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-
+//не пользуюсь
 public class Answers {
     int id;
     int idquestion;
