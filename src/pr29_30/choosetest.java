@@ -47,8 +47,6 @@ public class choosetest extends JFrame{
                 } catch (ClassNotFoundException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }
-//                test.id_test = id_test;
-                System.out.println(id_test);
             }
         });
     }

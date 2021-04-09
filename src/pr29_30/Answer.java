@@ -7,9 +7,9 @@ public class Answer
     public int id;
     public int idquestion;
     public int text;
-    public int right;
+    public String right;
 
-    public boolean isTrue(int id_answer) throws ClassNotFoundException {
+    public boolean isTrue(int id_answer,int idq) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String hostname = "localhost";
         String user = "ksyaVova";
@@ -21,40 +21,38 @@ public class Answer
         String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
 
         try {
-            String sql = "select right from answers where id="+ id_answer;
-            System.out.println("Подключаемся к БД");
+            String sql = "select right from answers where id="+ id_answer+" and idquestion="+idq;
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            System.out.print("\n");
+
             if(rs!=null)
             {
-
                 while(rs.next()){
 
-                    tr_fls=rs.getString("right");
-
+                    this.right=rs.getString("right");
                 }
 
             }
             else System.out.println("Ошибочка!");
 
-            if(tr_fls.equals("y"))
+            if(this.right.equals("y"))
             {
                 return true;
             }
-            return false;
+            else {
+                return false;
+            }
+
 
         } catch (SQLException var33) {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
-                    return false;
                 } catch (SQLException e) {
                     System.out.println(e.toString());
                 }
@@ -75,15 +73,12 @@ public class Answer
 
         try {
             String sql = "select idquestion from answers where id="+ id_answer;
-            System.out.println("Подключаемся к БД");
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
             if(rs!=null)
             {
-
                 while(rs.next()){
 
                     id_quest=rs.getInt("idquestion");
@@ -98,8 +93,6 @@ public class Answer
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                     return id_quest;

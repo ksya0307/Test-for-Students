@@ -8,13 +8,7 @@ public class User {
     public String login;
     public String password;
     public int role;
-    /*public User(int id, String name, String login, String password, int role) {
-        this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.role=role;
-    }*/
+
     public boolean enter( String login, String password) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String hostname = "localhost";
@@ -28,9 +22,9 @@ public class User {
 
         try {
             String sql = "select id,name,login,password,role from users where login='"+login+"'and password='"+password+"'";
-            System.out.println("Подключаемся к БД");
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -54,7 +48,6 @@ public class User {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
 
                 try {
                     con.close();

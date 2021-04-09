@@ -69,9 +69,9 @@ public class Test {
 
         try {
             String sql = "select test from tests where id="+ id_test;
-            System.out.println("Подключаемся к БД");
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -93,7 +93,7 @@ public class Test {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
+
 
                 try {
                     con.close();

@@ -25,9 +25,9 @@ public class Question {
 
         try {
             String sql = "select id, text from questions where idtest=" + idtest;
-            System.out.println("Подключаемся к БД");
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -76,9 +76,9 @@ public class Question {
 
         try {
             String sql = "select id,text from answers where idquestion=" + idQuestion;
-            System.out.println("Подключаемся к БД");
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -99,7 +99,7 @@ public class Question {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
+
 
                 try {
                     con.close();

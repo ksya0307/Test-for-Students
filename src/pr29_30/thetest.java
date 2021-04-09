@@ -12,7 +12,7 @@ public class thetest extends JFrame{
     private JPanel contentPane;
     private JScrollPane scrollPane;
     private JFrame frame;
-
+    public JRadioButton answer;
     public thetest(int id_test) throws ClassNotFoundException {
         frame = new JFrame("Тест " + id_test);
         JPanel panel = new JPanel();
@@ -59,25 +59,13 @@ public class thetest extends JFrame{
             quests[i].setText(entry.getValue());
             quests[i].setAlignmentX(Component.LEFT_ALIGNMENT);
             panel.add(quests[i]);
-           /* JTextArea question = new JTextArea();
-            question.setEnabled(false);
-            question.setLineWrap(true);
-            question.setWrapStyleWord(true);
-            question.setBounds(10, y, 600, 50);
-
-            y+= 110;
-
-            question.setName(entry.getKey().toString());
-            question.setText(entry.getValue());
-            panel.add(question);*/
-
 
             answers = q.getAnswers(entry.getKey());
             btn_grp[i] = new ButtonGroup();
 
             for (Map.Entry<Integer, String> entry_ans : answers.entrySet())
             {
-                JRadioButton answer = new JRadioButton();
+                answer = new JRadioButton();
                 answer.setText(entry_ans.getValue());
                 answer.setName(entry_ans.getKey().toString());
                 answer.setBounds(10, y, 600, 50);
@@ -89,31 +77,39 @@ public class thetest extends JFrame{
             i++;
             y+=20;
         }
+
         JButton submit = new JButton("Завершить тест");
         panel.add(submit);
         ActionListener submitClick = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int rightanswers =0;
                 for (int i = 0; i < btn_grp.length; i++)
                 {
                     for (Enumeration<AbstractButton> buttons = btn_grp[i].getElements(); buttons.hasMoreElements();) {
                         AbstractButton button = buttons.nextElement();
                         Answer ans = new Answer();
-                        try {
-                            if(ans.isTrue(Integer.valueOf(button.getName())))
-                            {
+                        System.out.println(button.getName()+" name" + " q: "+quests[i].getName());
 
+                        try {
+                            if(button.isSelected()){
+                                if(ans.isTrue(Integer.parseInt(button.getName()), Integer.parseInt(quests[i].getName()))){
+                                    System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
+                                    button.setBackground(Color.GREEN);
+                                    rightanswers++;
+                                }
+                                else{
+                                    button.setBackground(Color.RED);
+                                }
                             }
+
                         } catch (ClassNotFoundException classNotFoundException) {
                             classNotFoundException.printStackTrace();
-                        }
-                        if(button.isSelected())
-                        {
-
                         }
 
                     }
                 }
+                System.out.println("Количество правильных ответов "+rightanswers);
 
             }
         };

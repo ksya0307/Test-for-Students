@@ -21,9 +21,9 @@ public class Answers {
 
         try {
             String sql = "select text from answers where idquestion=" + idquestion;
-            System.out.println("Подключаемся к БД");
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -44,8 +44,6 @@ public class Answers {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                     return answers;
