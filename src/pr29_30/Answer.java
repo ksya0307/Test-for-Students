@@ -1,44 +1,50 @@
 package pr29_30;
 
 import java.sql.*;
-import java.util.*;
 
-public class Test {
+public class Answer
+{
     public int id;
-    public String test;
+    public int idquestion;
+    public int text;
+    public int right;
 
-    public List<String> getTests() throws ClassNotFoundException {
+    public boolean isTrue(int id_answer) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String hostname = "localhost";
         String user = "ksyaVova";
         String pass = "sys";
         String sid = "orcl";
-        List<String> tests = new ArrayList<String>();
+        String tr_fls = "";
         Connection con = null;
         Statement st = null;
         String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
 
         try {
-            String sql = "select id, test from tests";
+            String sql = "select right from answers where id="+ id_answer;
             System.out.println("Подключаемся к БД");
             con = DriverManager.getConnection(url, user, pass);
             System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
-            if(rs!=null){
+            if(rs!=null)
+            {
 
                 while(rs.next()){
 
-                    tests.add(rs.getString("test"));
+                    tr_fls=rs.getString("right");
 
                 }
-                return tests;
-
 
             }
             else System.out.println("Ошибочка!");
 
+            if(tr_fls.equals("y"))
+            {
+                return true;
+            }
+            return false;
 
         } catch (SQLException var33) {
             System.out.println(var33.toString());
@@ -48,46 +54,45 @@ public class Test {
 
                 try {
                     con.close();
-                    return tests;
+                    return false;
                 } catch (SQLException e) {
                     System.out.println(e.toString());
                 }
             }
         }
-        return null;
+        return false;
     }
-    public String getTest(int id_test) throws ClassNotFoundException {
+    public Integer getQuestion(int id_answer) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
-        String text_test = new String();
+        Integer id_quest = null;
         Connection con = null;
         Statement st = null;
         String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
 
         try {
-            String sql = "select test from tests where id="+ id_test;
+            String sql = "select idquestion from answers where id="+ id_answer;
             System.out.println("Подключаемся к БД");
             con = DriverManager.getConnection(url, user, pass);
             System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
-            if(rs!=null){
+            if(rs!=null)
+            {
 
                 while(rs.next()){
 
-                    text_test=rs.getString("test");
+                    id_quest=rs.getInt("idquestion");
 
                 }
-                return text_test;
-
 
             }
             else System.out.println("Ошибочка!");
-
+            return id_quest;
 
         } catch (SQLException var33) {
             System.out.println(var33.toString());
@@ -97,14 +102,13 @@ public class Test {
 
                 try {
                     con.close();
-                    return text_test;
+                    return id_quest;
                 } catch (SQLException e) {
                     System.out.println(e.toString());
                 }
             }
         }
-        return null;
+        return id_quest;
     }
-
 }
 
