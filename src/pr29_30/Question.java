@@ -14,9 +14,9 @@ public class Question {
 
     public Map<Integer,String> getQuestion(int idtest) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
         Map<Integer,String> questions = new HashMap<Integer,String>();
         Connection con = null;
@@ -50,8 +50,6 @@ public class Question {
 
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                     return questions;
@@ -65,9 +63,9 @@ public class Question {
 
     public Map<Integer,String> getAnswers(int idQuestion) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
         Map<Integer,String> answers = new HashMap<Integer,String>();
         Connection con = null;
@@ -76,9 +74,7 @@ public class Question {
 
         try {
             String sql = "select id,text from answers where idquestion=" + idQuestion;
-            System.out.println("Подключаемся к БД");
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -99,8 +95,6 @@ public class Question {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                     return answers;

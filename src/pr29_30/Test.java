@@ -9,9 +9,9 @@ public class Test {
 
     public List<String> getTests() throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
         List<String> tests = new ArrayList<String>();
         Connection con = null;
@@ -58,9 +58,9 @@ public class Test {
     }
     public String getTest(int id_test) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
         String text_test = new String();
         Connection con = null;

@@ -1,4 +1,5 @@
 package pr29_30;
+
 import java.io.PrintStream;
 import java.sql.*;
 
@@ -17,9 +18,9 @@ public class User {
     }*/
     public boolean enter( String login, String password) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
 
         Connection con = null;
@@ -32,9 +33,9 @@ public class User {
             con = DriverManager.getConnection(url, user, pass);
             System.out.println("Успешно");
             st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            ResultSet rs = null;
             System.out.print("\n");
-            if(rs!=null){
+            if((rs = st.executeQuery(sql)) != null){
                 while(rs.next()){
                     this.id=rs.getInt("id");
                     this.role=rs.getInt("role");
@@ -44,8 +45,6 @@ public class User {
                     System.out.println(this.id+" "+this.role+" " + login+" "+password);
                     return true;
                 }
-
-
             }
             else return false;
 
@@ -55,16 +54,12 @@ public class User {
         } finally {
             if (con != null) {
                 System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
-                    return true;
                 } catch (SQLException var30) {
                     System.out.println(var30.toString());
                 }
-
             }
-
         }
         return false;
     }

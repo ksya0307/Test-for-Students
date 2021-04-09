@@ -11,9 +11,9 @@ public class Answer
 
     public boolean isTrue(int id_answer) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
+        String hostname = "pcForOracle";
         String user = "ksyaVova";
-        String pass = "sys";
+        String pass = "root";
         String sid = "orcl";
         String tr_fls = "";
         Connection con = null;
@@ -22,9 +22,7 @@ public class Answer
 
         try {
             String sql = "select right from answers where id="+ id_answer;
-            System.out.println("Подключаемся к БД");
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -50,8 +48,6 @@ public class Answer
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                     return false;
