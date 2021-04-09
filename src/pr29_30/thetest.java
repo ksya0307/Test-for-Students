@@ -45,6 +45,7 @@ public class thetest extends JFrame{
 
 
        // contentPane.add(scrollPane);
+//git
 
         int y=10;
         for (Map.Entry<Integer, String> entry : questions.entrySet()
