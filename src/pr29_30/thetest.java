@@ -116,7 +116,7 @@ public class thetest extends JFrame{
                     try {
 
                         if(button.isSelected()){
-                            if(ans.isTrue(Integer.parseInt(button.getName()), Integer.parseInt(quests[i1].getName()))){
+                            if(ans.isTrue(Integer.parseInt(quests[i1].getName()))){
                                 //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
                                 button.setBackground(Color.GREEN);
                                 rightanswers++;

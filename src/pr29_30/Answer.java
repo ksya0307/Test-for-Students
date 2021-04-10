@@ -92,11 +92,19 @@ public class Answer
 
     public List<AnswersQuestions> getAnswersOfUser(int idUser, int idTest)
     {
-        List<Integer> idAnswers = new ArrayList<Integer>();
+        List<AnswersQuestions> answers = new ArrayList<AnswersQuestions>();
         Connection con = null;
         Statement st = null;
         try {
-            String sql = "select right from answers where id=";
+            String sql = "select a.idquestion as idQuestion, a.id as idAnswer from \n" +
+                    "USERANSWERS u inner join ANSWERS a\n" +
+                    "inner join QUESTIONS q\n" +
+                    "inner join TESTS t\n" +
+                    "on t.id=q.idtest\n" +
+                    "on q.id=a.idquestion\n" +
+                    "on a.id=u.idanswer WHERE " +
+                    "u.iduser = "+idUser+" " +
+                    "and t.id="+idTest+"";
             con = ORCLConnection.conn();
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -105,15 +113,12 @@ public class Answer
             {
 
                 while(rs.next()){
-
-            //        tr_fls=rs.getString("right");
-
+                    answers.add(new AnswersQuestions(rs.getInt("idQuestion"),
+                            rs.getInt("idAnswer")));
                 }
-
+                return answers;
             }
             else System.out.println("Ошибочка!");
-
-            return null;
 
         } catch (SQLException | ClassNotFoundException var33) {
             System.out.println(var33.toString());
