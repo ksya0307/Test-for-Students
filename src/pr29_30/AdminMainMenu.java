@@ -63,14 +63,9 @@ public class AdminMainMenu extends JFrame
         addTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                thetest test = null;
-                try {
-                    id_test = tests.getSelectedIndex()+1;
-                    test = new thetest(id_test);
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
-                }
-//                test.id_test = id_test;
+
+                addTest addTest = new addTest();
+
                 System.out.println(id_test);
             }
         });
@@ -86,14 +81,7 @@ public class AdminMainMenu extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 thetest test = null;
-                try {
-                    id_test = tests.getSelectedIndex()+1;
-                    test = new thetest(id_test);
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
-                }
-//                test.id_test = id_test;
-                System.out.println(id_test);
+
             }
         });
         y=y+height+interval;
@@ -108,12 +96,12 @@ public class AdminMainMenu extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 thetest test = null;
-                try {
-                    id_test = tests.getSelectedIndex()+1;
-                    test = new thetest(id_test);
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
-                }
+//                try {
+//                    id_test = tests.getSelectedIndex()+1;
+//                    test = new thetest(id_test);
+//                } catch (ClassNotFoundException classNotFoundException) {
+//                    classNotFoundException.printStackTrace();
+//                }
 //                test.id_test = id_test;
                 System.out.println(id_test);
             }

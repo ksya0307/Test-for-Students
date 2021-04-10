@@ -49,4 +49,32 @@ public class Answers {
         }
         return null;
     }
+    public void InsertIntoUserAnswers(int id_user, int id_answer){
+        Connection con = null;
+        PreparedStatement st = null;
+
+
+        try {
+            con = ORCLConnection.conn();
+            String sql = "insert into useranswers(iduser, idanswer) values("+id_user+", "+id_answer+")";
+
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+
+        } catch (SQLException | ClassNotFoundException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+
+                try {
+                    con.close();
+                } catch (SQLException var30) {
+                    System.out.println(var30.toString());
+                }
+
+            }
+
+        }
+    }
 }

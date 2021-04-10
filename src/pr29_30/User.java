@@ -14,8 +14,6 @@ public class User {
 
     public boolean enter( String login, String password) throws ClassNotFoundException {
 
-
-    public boolean enter( String login, String password) throws ClassNotFoundException {
         Connection con = null;
         Statement st = null;
 
