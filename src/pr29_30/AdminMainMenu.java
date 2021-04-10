@@ -64,7 +64,8 @@ public class AdminMainMenu extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                test.id_test = id_test;
+                addTest addTest = new addTest();
+
                 System.out.println(id_test);
             }
         });

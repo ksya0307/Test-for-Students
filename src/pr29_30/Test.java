@@ -89,9 +89,7 @@ public class Test {
         Statement st = null;
         try {
             String sql = "select id, test from tests WHERE id in (SELECT idtest FROM results where iduser="+idUser+")";
-            System.out.println("Подключаемся к БД");
             con = ORCLConnection.conn();
-            System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -157,5 +155,34 @@ public class Test {
             }
         }
         return id;
+    }
+
+    public  void InsertTest(String name_test){
+
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = ORCLConnection.conn();
+            String sql = "insert into tests(test) values('"+name_test+"')";
+
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+
+            con = ORCLConnection.conn();
+
+
+
+        } catch (SQLException | ClassNotFoundException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.toString());
+                }
+            }
+        }
     }
 }

@@ -111,13 +111,17 @@ public class thetest extends JFrame{
                 for (Enumeration<AbstractButton> buttons = btn_grp[i1].getElements(); buttons.hasMoreElements();) {
                     AbstractButton button = buttons.nextElement();
                     Answer ans = new Answer();
-                    System.out.println(button.getName()+" name" + " q: "+quests[i1].getName());
+                    //System.out.println(button.getName()+" name" + " q: "+quests[i1].getName());
 
                     try {
 
                         if(button.isSelected()){
-                            if(ans.isTrue(Integer.parseInt(quests[i1].getName()))){
-                                //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
+                            System.out.println(button.getName() +" id ответа" + " user - " + id_user);
+                            Answers insertAnswers = new Answers();
+                            insertAnswers.InsertIntoUserAnswers(id_user,Integer.parseInt(button.getName()));
+                            if(ans.isTrue(Integer.parseInt(button.getName()))){
+
+                                //System.out.println(button.getName()+" name" + " q: "+quests[i1].getName() + " answer "+ans.right);
                                 button.setBackground(Color.GREEN);
                                 rightanswers++;
                             }
@@ -203,4 +207,3 @@ public class thetest extends JFrame{
     }
 
 }
-
