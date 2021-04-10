@@ -47,7 +47,6 @@ public class AdminMainMenu extends JFrame
                 CheckResults resForm = null;
                 try {
                     resForm = new CheckResults();
-                    setVisible(false);
                 } catch (ClassNotFoundException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }

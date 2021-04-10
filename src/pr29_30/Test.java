@@ -8,20 +8,13 @@ public class Test {
     public String test;
 
     public List<String> getTests() throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "pcForOracle";
-        String user = "ksyaVova";
-        String pass = "root";
-        String sid = "orcl";
         List<String> tests = new ArrayList<String>();
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
-
         try {
             String sql = "select id, test from tests";
             System.out.println("Подключаемся к БД");
-            con = DriverManager.getConnection(url, user, pass);
+            con = ORCLConnection.conn();
             System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -57,20 +50,52 @@ public class Test {
         return null;
     }
     public String getTest(int id_test) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "pcForOracle";
-        String user = "ksyaVova";
-        String pass = "root";
-        String sid = "orcl";
         String text_test = new String();
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
-
         try {
             String sql = "select test from tests where id="+ id_test;
             System.out.println("Подключаемся к БД");
-            con = DriverManager.getConnection(url, user, pass);
+            con = ORCLConnection.conn();
+            System.out.println("Успешно");
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            System.out.print("\n");
+            if(rs!=null){
+                while(rs.next()){
+
+                    text_test=rs.getString("test");
+
+                }
+                return text_test;
+            }
+            else System.out.println("Ошибочка!");
+
+        } catch (SQLException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+                System.out.println("Закрытие подключения");
+
+                try {
+                    con.close();
+                    return text_test;
+                } catch (SQLException e) {
+                    System.out.println(e.toString());
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<Integer,String> getSolvedTests(Integer idUser) throws ClassNotFoundException {
+        Map<Integer,String> tests = new HashMap<>();
+        Connection con = null;
+        Statement st = null;
+        try {
+            String sql = "select id, test from tests WHERE id in (SELECT idtest FROM results where iduser="+idUser+")";
+            System.out.println("Подключаемся к БД");
+            con = ORCLConnection.conn();
             System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -79,10 +104,10 @@ public class Test {
 
                 while(rs.next()){
 
-                    text_test=rs.getString("test");
+                    tests.put(rs.getInt("id"), rs.getString("test"));
 
                 }
-                return text_test;
+                return tests;
 
 
             }
@@ -97,7 +122,7 @@ public class Test {
 
                 try {
                     con.close();
-                    return text_test;
+                    return tests;
                 } catch (SQLException e) {
                     System.out.println(e.toString());
                 }

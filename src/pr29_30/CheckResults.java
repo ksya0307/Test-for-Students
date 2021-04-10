@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckResults extends JFrame{
     public int id_test;
@@ -11,6 +14,9 @@ public class CheckResults extends JFrame{
     private JPanel contentPane;
     private JTable tableResults;
     private JButton buttonBack;
+    private JComboBox users;
+    private JComboBox solvedTests;
+    private JButton buttonSubmit;
     public int id_user;
 
     public  CheckResults() throws ClassNotFoundException {
@@ -18,20 +24,51 @@ public class CheckResults extends JFrame{
         int x = 20;
         int y = 25;
         int interval = 25;
-        int width = 600;
-        int height = 700;
-        JFrame frame = new JFrame("Просмотр результата");
-        frame.setBounds(400,400,width,height);
+        int widthForm = 600;
+        int heightForm = 250;
+        int widthCombobox = 300;
+        int heightCombobox = 25;
+        int widthButton = 150;
+        int heightButton = heightCombobox;
+        JFrame frame = new JFrame("Просмотр результатов решения теста");
+        frame.setBounds(400,400,widthForm,heightForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setVisible(true);
         this.setContentPane(this.contentPane);
         this.getContentPane().setLayout((LayoutManager)null);
 
+        users = new JComboBox();
+        users.setBounds(x,20,widthCombobox,heightCombobox);
 
-        //Кнопка Возврата назад
-        buttonBack = new JButton("Назад");
-        buttonBack.setBounds(x,height-150,150,25);
+        solvedTests = new JComboBox();
+        solvedTests.setBounds(x, 60, widthCombobox, heightCombobox);
+        User user = new User();
+        Map<Integer,String> usersMap = user.getUsers();
+        for(Map.Entry<Integer, String> entry : usersMap.entrySet())
+        {
+            users.addItem(entry.getValue());
+        }
+        getTestFromUsers(usersMap);
+
+        frame.add(solvedTests);
+        frame.add(users);
+        users.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try
+                {
+                    getTestFromUsers(usersMap);
+                    //frame.add(solvedTests);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        });
+        //Кнопка Закрытия
+        buttonBack = new JButton("Закрыть");
+        buttonBack.setBounds(x,heightForm-100,widthButton,heightButton);
         this.getContentPane().add(this.buttonBack);
         frame.add(buttonBack);
 
@@ -42,5 +79,43 @@ public class CheckResults extends JFrame{
                 frame.dispose();
             }
         });
+
+        //Кнопка показа теста пользователя
+        buttonSubmit = new JButton("Показать тест");
+        buttonSubmit.setBounds(x, 100, widthButton, heightButton);
+        this.getContentPane().add(this.buttonSubmit);
+        frame.add(buttonSubmit);
+        buttonSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+    }
+
+    private void getTestFromUsers(Map<Integer, String> usersMap)
+    {
+        try
+        {
+            solvedTests.removeAllItems();
+            int iduser = 0;
+            for(Map.Entry<Integer, String> entry : usersMap.entrySet())
+            {
+                if(entry.getValue() == users.getSelectedItem().toString())
+                {
+                    iduser = entry.getKey();
+                }
+            }
+            Test test = new Test();
+            Map<Integer,String> mapSolvedTests = test.getSolvedTests(iduser);
+            for (Map.Entry<Integer, String> entry : mapSolvedTests.entrySet())
+            {
+                solvedTests.addItem(entry.getValue());
+            }
+        }
+        catch (Exception ex)
+        {
+        }
     }
 }
