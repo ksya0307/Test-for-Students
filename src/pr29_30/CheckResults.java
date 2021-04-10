@@ -30,6 +30,7 @@ public class CheckResults extends JFrame{
         int heightCombobox = 25;
         int widthButton = 150;
         int heightButton = heightCombobox;
+        Test test = new Test();
         JFrame frame = new JFrame("Просмотр результатов решения теста");
         frame.setBounds(400,400,widthForm,heightForm);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,17 +39,22 @@ public class CheckResults extends JFrame{
         this.setContentPane(this.contentPane);
         this.getContentPane().setLayout((LayoutManager)null);
 
+        //Список пользователей
         users = new JComboBox();
         users.setBounds(x,20,widthCombobox,heightCombobox);
 
+        //Список тестов, пройденных выбранным пользователем
         solvedTests = new JComboBox();
         solvedTests.setBounds(x, 60, widthCombobox, heightCombobox);
         User user = new User();
+        //Получение списка пользователей
         Map<Integer,String> usersMap = user.getUsers();
+        //Заполнение списком пользователей
         for(Map.Entry<Integer, String> entry : usersMap.entrySet())
         {
             users.addItem(entry.getValue());
         }
+        //Получение списка тестов пользователя
         getTestFromUsers(usersMap);
 
         frame.add(solvedTests);
@@ -72,7 +78,6 @@ public class CheckResults extends JFrame{
         this.getContentPane().add(this.buttonBack);
         frame.add(buttonBack);
 
-        //Еще не готово, тут открывается форма добавления теста
         buttonBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,10 +90,31 @@ public class CheckResults extends JFrame{
         buttonSubmit.setBounds(x, 100, widthButton, heightButton);
         this.getContentPane().add(this.buttonSubmit);
         frame.add(buttonSubmit);
+
+        //Идет получение id пользователя и теста и передача их в качестве параметров
+        //форме, которая отображает решенный тест
         buttonSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int iduser= 0;
+                int idtest = 0;
+                try
+                {
+                    for(Map.Entry<Integer, String> entry : usersMap.entrySet())
+                    {
+                        if(entry.getValue() == users.getSelectedItem().toString())
+                        {
+                            iduser = entry.getKey();
+                            System.out.println(iduser + "\t"+ test.getIdTest(solvedTests.getSelectedItem().toString()));
+                            ReviewResult reviewResult = new ReviewResult(iduser,
+                                    test.getIdTest(solvedTests.getSelectedItem().toString()));
+                            break;
+                        }
+                    }
+                }
+                catch (ClassNotFoundException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                }
             }
         });
 
@@ -105,6 +131,7 @@ public class CheckResults extends JFrame{
                 if(entry.getValue() == users.getSelectedItem().toString())
                 {
                     iduser = entry.getKey();
+                    break;
                 }
             }
             Test test = new Test();
