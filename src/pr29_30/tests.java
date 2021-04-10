@@ -74,9 +74,6 @@ public class tests extends JFrame{
     }
 
 
-
-
-
     public static void main(String[] args) {
         tests dialog = new tests();
 

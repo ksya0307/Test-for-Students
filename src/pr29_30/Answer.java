@@ -9,7 +9,7 @@ public class Answer
     public int id;
     public int idquestion;
     public int text;
-    public int right;
+    public String right;
 
     public boolean isTrue(int id_answer) throws ClassNotFoundException {
         String tr_fls = "";
@@ -20,24 +20,25 @@ public class Answer
             con = ORCLConnection.conn();
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            System.out.print("\n");
+
             if(rs!=null)
             {
-
                 while(rs.next()){
 
-                    tr_fls=rs.getString("right");
-
+                    this.right=rs.getString("right");
                 }
 
             }
             else System.out.println("Ошибочка!");
 
-            if(tr_fls.equals("y"))
+            if(this.right.equals("y"))
             {
                 return true;
             }
-            return false;
+            else {
+                return false;
+            }
+
 
         } catch (SQLException var33) {
             System.out.println(var33.toString());
@@ -59,15 +60,12 @@ public class Answer
 
         try {
             String sql = "select idquestion from answers where id="+ id_answer;
-            System.out.println("Подключаемся к БД");
             con = ORCLConnection.conn();
-            System.out.println("Успешно");
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
             if(rs!=null)
             {
-
                 while(rs.next()){
 
                     id_quest=rs.getInt("idquestion");
@@ -82,8 +80,6 @@ public class Answer
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
-
                 try {
                     con.close();
                 } catch (SQLException e) {
@@ -134,4 +130,3 @@ public class Answer
 
     }
 }
-

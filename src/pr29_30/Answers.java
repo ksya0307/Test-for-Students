@@ -3,7 +3,7 @@ package pr29_30;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-
+//не пользуюсь
 public class Answers {
     int id;
     int idquestion;
@@ -14,8 +14,11 @@ public class Answers {
         Statement st = null;
 
         try {
-            String sql = "select text from answers where idquestion=" + idquestion;
             con = ORCLConnection.conn();
+            String sql = "select text from answers where idquestion=" + idquestion;
+
+
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");

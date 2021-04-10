@@ -13,21 +13,18 @@ public class Question {
     public int idtest;
 
     public Map<Integer,String> getQuestion(int idtest) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "pcForOracle";
-        String user = "ksyaVova";
-        String pass = "root";
-        String sid = "orcl";
+
         Map<Integer,String> questions = new HashMap<Integer,String>();
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
+
 
         try {
+            con = ORCLConnection.conn();
             String sql = "select id, text from questions where idtest=" + idtest;
-            System.out.println("Подключаемся к БД");
-            con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+
+
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -66,8 +63,8 @@ public class Question {
         Connection con = null;
         Statement st = null;
         try {
-            String sql = "select id,text from answers where idquestion=" + idQuestion;
             con = ORCLConnection.conn();
+            String sql = "select id,text from answers where idquestion=" + idQuestion;
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             System.out.print("\n");
@@ -100,4 +97,3 @@ public class Question {
     }
 
 }
-

@@ -13,17 +13,23 @@ public class User {
     public int role;
 
     public boolean enter( String login, String password) throws ClassNotFoundException {
+
+
+    public boolean enter( String login, String password) throws ClassNotFoundException {
         Connection con = null;
         Statement st = null;
+
+
         try {
-            String sql = "select id,name,login,password,role from users where login='"+login+"'and password='"+password+"'";
-            System.out.println("Подключаемся к БД");
             con = ORCLConnection.conn();
-            System.out.println("Успешно");
+            String sql = "select id,name,login,password,role from users where login='"+login+"'and password='"+password+"'";
+
+
+
             st = con.createStatement();
-            ResultSet rs = null;
-            System.out.print("\n");
-            if((rs = st.executeQuery(sql)) != null){
+            ResultSet rs = st.executeQuery(sql);
+
+            if(rs!=null){
                 while(rs.next()){
                     this.id=rs.getInt("id");
                     this.role=rs.getInt("role");
@@ -41,7 +47,7 @@ public class User {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
+
                 try {
                     con.close();
                 } catch (SQLException var30) {
@@ -91,4 +97,3 @@ public class User {
         return null;
     }
 }
-
