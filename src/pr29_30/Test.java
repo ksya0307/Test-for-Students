@@ -7,31 +7,22 @@ public class Test {
     public int id;
     public String test;
 
-    public List<String> getTests() throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
-        String user = "ksyaVova";
-        String pass = "sys";
-        String sid = "orcl";
-        List<String> tests = new ArrayList<String>();
+    public Map<Integer, String> getTests(int id_user) throws ClassNotFoundException {
+
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
-
+        Map<Integer,String> tests = new HashMap<Integer,String>();
         try {
-            String sql = "select id, test from tests";
-            System.out.println("Подключаемся к БД");
-            con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Успешно");
+            con = ORCLConnection.conn();
+            String sql = "select id, test from TESTS where ID not in (select idtest from results where iduser="+id_user+")";
+
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            System.out.print("\n");
+
             if(rs!=null){
 
                 while(rs.next()){
-
-                    tests.add(rs.getString("test"));
-
+                    tests.put(rs.getInt("id"),rs.getString("test"));
                 }
                 return tests;
 
@@ -44,7 +35,6 @@ public class Test {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-                System.out.println("Закрытие подключения");
 
                 try {
                     con.close();
@@ -57,20 +47,14 @@ public class Test {
         return null;
     }
     public String getTest(int id_test) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
-        String user = "ksyaVova";
-        String pass = "sys";
-        String sid = "orcl";
+
         String text_test = new String();
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
 
         try {
+            con = ORCLConnection.conn();
             String sql = "select test from tests where id="+ id_test;
-
-            con = DriverManager.getConnection(url, user, pass);
 
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -80,7 +64,6 @@ public class Test {
                 while(rs.next()){
 
                     text_test=rs.getString("test");
-
                 }
                 return text_test;
 
@@ -93,8 +76,6 @@ public class Test {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-
-
                 try {
                     con.close();
                     return text_test;
@@ -106,5 +87,39 @@ public class Test {
         return null;
     }
 
+    public int getIdTest(String name_test){
+        Connection con = null;
+        Statement st = null;
+        try {
+            con = ORCLConnection.conn();
+            String sql = "select id from tests where test='"+ name_test+"'";
+
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            if(rs!=null){
+                while(rs.next())
+                {
+                    this.id = rs.getInt("id");
+                }
+
+            }
+            else System.out.println("Ошибочка!");
+
+
+        } catch (SQLException | ClassNotFoundException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+
+                } catch (SQLException e) {
+                    System.out.println(e.toString());
+                }
+            }
+        }
+        return id;
+    }
 }
 

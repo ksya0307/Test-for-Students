@@ -10,20 +10,17 @@ public class User {
     public int role;
 
     public boolean enter( String login, String password) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
-        String user = "ksyaVova";
-        String pass = "sys";
-        String sid = "orcl";
+
 
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
+
 
         try {
+            con = ORCLConnection.conn();
             String sql = "select id,name,login,password,role from users where login='"+login+"'and password='"+password+"'";
 
-            con = DriverManager.getConnection(url, user, pass);
+
 
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);

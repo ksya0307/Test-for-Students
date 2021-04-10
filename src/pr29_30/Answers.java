@@ -9,20 +9,17 @@ public class Answers {
     int idquestion;
     String text;
     public Map<Integer,String> getAnswers(int idquestion) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
-        String user = "ksyaVova";
-        String pass = "sys";
-        String sid = "orcl";
+
         Map<Integer,String> answers = new HashMap<Integer,String>();
         Connection con = null;
         Statement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
+
 
         try {
+            con = ORCLConnection.conn();
             String sql = "select text from answers where idquestion=" + idquestion;
 
-            con = DriverManager.getConnection(url, user, pass);
+
 
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);

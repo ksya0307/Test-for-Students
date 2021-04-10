@@ -12,13 +12,14 @@ import java.util.Map;
 public class thetest extends JFrame{
     private JPanel contentPane;
     private JScrollPane scrollPane;
+    private JButton back;
+    private JButton checkresult;
     private JFrame frame;
     public JRadioButton answer;
     public int id_user;
     public int rightanswers;
     public thetest(int id_test, int id_user) throws ClassNotFoundException {
         frame = new JFrame("Тест " + id_test);
-
 
         //получить id юзер
         this.id_user = id_user;
@@ -33,10 +34,16 @@ public class thetest extends JFrame{
         scrollPane.setAutoscrolls(true);
         panel.setBounds(0,0,700, 600);
         panel.setEnabled(false);
-        this.getContentPane().setLayout((LayoutManager)null);
+        this.getContentPane().setLayout(null);
+
+        back = new JButton("Назад");
+        back.setBounds(0,0,100,30);
+        panel.add(back);
 
 
-        Map<Integer,String> questions = new HashMap<Integer,String>();
+
+
+        Map<Integer,String> questions;
         Question q = new Question();
         questions=q.getQuestion(id_test);
 
@@ -50,7 +57,9 @@ public class thetest extends JFrame{
         panel.add(text);
         int y = 50;
         int i =0;
-        Map<Integer,String> answers = new HashMap<Integer,String>();
+
+        Map<Integer,String> answers;
+
         ButtonGroup[] btn_grp = new ButtonGroup[questions.size()];
         for (Map.Entry<Integer, String> entry : questions.entrySet())
         {
@@ -87,71 +96,91 @@ public class thetest extends JFrame{
             y+=20;
         }
 
+        checkresult = new JButton("Посмотреть результаты");
+        checkresult.setBounds(0,0,200,30);
+        checkresult.setEnabled(false);
+        panel.add(checkresult);
+
         JButton submit = new JButton("Завершить тест");
-        JLabel countrightanswers = new JLabel();
         panel.add(submit);
-        ActionListener submitClick = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                rightanswers =0;
-                for (int i = 0; i < btn_grp.length; i++)
-                {
-                    for (Enumeration<AbstractButton> buttons = btn_grp[i].getElements(); buttons.hasMoreElements();) {
-                        AbstractButton button = buttons.nextElement();
-                        Answer ans = new Answer();
-                        System.out.println(button.getName()+" name" + " q: "+quests[i].getName());
+        int finalI = i;
+        ActionListener submitClick = e -> {
+            rightanswers =0;
+            for (int i1 = 0; i1 < btn_grp.length; i1++)
+            {
+                for (Enumeration<AbstractButton> buttons = btn_grp[i1].getElements(); buttons.hasMoreElements();) {
+                    AbstractButton button = buttons.nextElement();
+                    Answer ans = new Answer();
+                    System.out.println(button.getName()+" name" + " q: "+quests[i1].getName());
 
-                        try {
-                            if(button.isSelected()){
-                                if(ans.isTrue(Integer.parseInt(button.getName()), Integer.parseInt(quests[i].getName()))){
-                                    //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
-                                    button.setBackground(Color.GREEN);
-                                    rightanswers++;
-                                }
-                                else{
-                                    button.setBackground(Color.RED);
-                                }
+                    try {
+
+                        if(button.isSelected()){
+                            if(ans.isTrue(Integer.parseInt(button.getName()), Integer.parseInt(quests[i1].getName()))){
+                                //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
+                                button.setBackground(Color.GREEN);
+                                rightanswers++;
                             }
-
-                        } catch (ClassNotFoundException classNotFoundException) {
-                            classNotFoundException.printStackTrace();
+                            else{
+                                button.setBackground(Color.RED);
+                            }
                         }
 
+                    } catch (ClassNotFoundException classNotFoundException) {
+                        classNotFoundException.printStackTrace();
                     }
-                }
-                JOptionPane.showMessageDialog(null,"Количество правильных ответов - "+rightanswers);
-                try {
-                    InsertResultUser(id_user,id_test,rightanswers);
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
+
                 }
             }
+            JOptionPane.showMessageDialog(null,"Количество правильных ответов - "+rightanswers);
+            checkresult.setEnabled(true);
+            try {
+                InsertResultUser(id_user,id_test,rightanswers);
+                submit.setEnabled(false);
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            }
+
         };
         submit.addActionListener(submitClick);
 
-        getUserResult getUserResult = new getUserResult(this.id_user);
+
+
         frame.add(scrollPane);
         frame.setBounds(400, 300, 700, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
 
+        back.addActionListener(e -> {
+            try {
+                choosetest backchoose = new choosetest(id_user);
+                frame.setVisible(false);
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            }
+        });
+
+        checkresult.addActionListener(e -> {
+            try {
+                getUserResult getUserResult = new getUserResult(id_user);
+                frame.setVisible(false);
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            }
+
+        });
     }
 
     private void InsertResultUser(int id_user,int id_test, int result) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        String hostname = "localhost";
-        String user = "ksyaVova";
-        String pass = "sys";
-        String sid = "orcl";
+
 
         Connection con = null;
         PreparedStatement st = null;
-        String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
+
 
         try {
+            con = ORCLConnection.conn();
             String sql = "insert into results(iduser, idtest,result) values ("+this.id_user+", "+id_test+", "+rightanswers+")";
-
-            con = DriverManager.getConnection(url, user, pass);
 
             st = con.prepareStatement(sql);
             st.executeUpdate();
@@ -172,5 +201,6 @@ public class thetest extends JFrame{
 
         }
     }
+
 }
 

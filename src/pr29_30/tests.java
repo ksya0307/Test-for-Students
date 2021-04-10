@@ -52,7 +52,6 @@ public class tests extends JFrame{
                     JOptionPane.showMessageDialog(null,"ОК!");
                     if(user.role ==1){
 
-
                     }
                     else if(user.role==2){
                         choosetest showpage = new choosetest(user.id);
@@ -73,9 +72,6 @@ public class tests extends JFrame{
         frame.add(l_passw);
         frame.add(l_login);
     }
-
-
-
 
 
     public static void main(String[] args) {

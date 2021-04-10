@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class choosetest extends JFrame{
@@ -25,9 +26,17 @@ public class choosetest extends JFrame{
         this.getContentPane().setLayout((LayoutManager)null);
 
         Test showtests = new Test();
-        List<String> listtest = showtests.getTests();
+        Map<Integer, String> listtest = showtests.getTests(id_user);
 
-        tests = new JComboBox(listtest.toArray());
+        tests = new JComboBox();
+        Map<Integer, String> getTests = showtests.getTests(id_user);
+
+        for (Map.Entry<Integer,String> entry: getTests.entrySet())
+        {
+            tests.addItem(entry.getValue());
+        }
+
+
         tests.setBounds(50,40,300,25);
         this.getContentPane().add(this.tests);
 
@@ -41,8 +50,9 @@ public class choosetest extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 thetest test = null;
+
                 try {
-                    id_test = tests.getSelectedIndex()+1;
+                    int id_test = showtests.getIdTest(tests.getSelectedItem().toString());
                     test = new thetest(id_test, id_user);
                     frame.setVisible(false);
                 } catch (ClassNotFoundException classNotFoundException) {
