@@ -28,7 +28,7 @@ public class choosetest extends JFrame{
         List<String> listtest = showtests.getTests();
 
         tests = new JComboBox(listtest.toArray());
-        tests.setBounds(50,40,300,25);
+        tests.setBounds(20,20,300,25);
         this.getContentPane().add(this.tests);
 
         getTest = new JButton("Открыть");

@@ -8,13 +8,13 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class thetest extends JFrame{
+public class ReviewResult extends JFrame{
     private JPanel contentPane;
     private JScrollPane scrollPane;
     private JFrame frame;
 
-    public thetest(int id_test) throws ClassNotFoundException {
-        frame = new JFrame("Тест " + id_test);
+    public ReviewResult(int idUser, int idTest) throws ClassNotFoundException {
+        frame = new JFrame("Тест " + idTest);
         JPanel panel = new JPanel();
 
         scrollPane = new JScrollPane(panel);
@@ -29,7 +29,7 @@ public class thetest extends JFrame{
 
         Map<Integer,String> questions = new HashMap<Integer,String>();
         Question q = new Question();
-        questions=q.getQuestion(id_test);
+        questions=q.getQuestion(idTest);
 
         JTextArea[] quests = new JTextArea[questions.size()];
 
@@ -37,7 +37,7 @@ public class thetest extends JFrame{
 
         Test test = new Test();
         JTextArea text = new JTextArea();
-        text.setText(test.getTest(id_test));
+        text.setText(test.getTest(idTest));
         panel.add(text);
         int y = 50;
         int i =0;
@@ -59,18 +59,6 @@ public class thetest extends JFrame{
             quests[i].setText(entry.getValue());
             quests[i].setAlignmentX(Component.LEFT_ALIGNMENT);
             panel.add(quests[i]);
-           /* JTextArea question = new JTextArea();
-            question.setEnabled(false);
-            question.setLineWrap(true);
-            question.setWrapStyleWord(true);
-            question.setBounds(10, y, 600, 50);
-
-            y+= 110;
-
-            question.setName(entry.getKey().toString());
-            question.setText(entry.getValue());
-            panel.add(question);*/
-
 
             answers = q.getAnswers(entry.getKey());
             btn_grp[i] = new ButtonGroup();
@@ -89,35 +77,36 @@ public class thetest extends JFrame{
             i++;
             y+=20;
         }
-        JButton submit = new JButton("Завершить тест");
-        panel.add(submit);
-        ActionListener submitClick = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < btn_grp.length; i++)
-                {
-                    for (Enumeration<AbstractButton> buttons = btn_grp[i].getElements(); buttons.hasMoreElements();) {
-                        AbstractButton button = buttons.nextElement();
+
+
+
+        for (int j = 0; j < btn_grp.length; j++)
+        {
+            for (Enumeration<AbstractButton> buttons = btn_grp[j].getElements(); buttons.hasMoreElements();) {
+                AbstractButton button = buttons.nextElement();
+
+                System.out.println(button.getName()+" name" + " q: "+quests[j].getName());
+
+                try {
+                    if(button.isSelected()){
                         Answer ans = new Answer();
-                        try {
-                            if(ans.isTrue(Integer.valueOf(button.getName())))
-                            {
-
-                            }
-                        } catch (ClassNotFoundException classNotFoundException) {
-                            classNotFoundException.printStackTrace();
-                        }
-                        if(button.isSelected())
-                        {
+                        if(ans.isTrue(Integer.parseInt(quests[j].getName()))){
+                            //System.out.println(button.getName()+" name" + " q: "+quests[i].getName() + " answer "+ans.right);
+                            button.setBackground(Color.GREEN);
 
                         }
-
+                        else{
+                            button.setBackground(Color.RED);
+                        }
                     }
+
+                } catch (ClassNotFoundException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
                 }
 
             }
-        };
-        submit.addActionListener(submitClick);
+        }
+
         frame.add(scrollPane);
         frame.setBounds(400, 300, 700, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

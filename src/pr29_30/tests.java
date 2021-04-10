@@ -2,6 +2,7 @@ package pr29_30;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class tests extends JFrame{
     private JPanel contentPane;
@@ -14,7 +15,6 @@ public class tests extends JFrame{
 
     public tests(){
         JFrame frame = new JFrame("Авторизация");
-       // frame.setSize(300,250);
         frame.setBounds(830,400,300,250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -51,8 +51,7 @@ public class tests extends JFrame{
                 if(entered){
                     JOptionPane.showMessageDialog(null,"ОК!");
                     if(user.role ==1){
-
-
+                        AdminMainMenu mainMenu = new AdminMainMenu(user.id);
                     }
                     else if(user.role==2){
                         choosetest showpage = new choosetest(user.id);
