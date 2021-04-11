@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class ORCLConnection {
     public static Connection conn() throws ClassNotFoundException {
-        String hostname = "pcForOracle";
+        String hostname = "localhost";
         String user = "ksyaVova";
-        String pass = "root";
+        String pass = "sys";
         String sid = "orcl";
         String url = "jdbc:oracle:thin:@" + hostname + ":1521:" + sid;
         Connection connect = null;

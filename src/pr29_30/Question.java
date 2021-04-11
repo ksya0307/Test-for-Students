@@ -96,4 +96,32 @@ public class Question {
         return null;
     }
 
+    public void InsertQuestionTest(String thequestion,int id_test){
+        Connection con = null;
+        PreparedStatement st = null;
+
+
+        try {
+            con = ORCLConnection.conn();
+            String sql = "insert into questions(text, idtest) values('"+thequestion+"',"+id_test+")";
+
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+
+        } catch (SQLException | ClassNotFoundException var33) {
+            System.out.println(var33.toString());
+        } finally {
+            if (con != null) {
+
+                try {
+                    con.close();
+                } catch (SQLException var30) {
+                    System.out.println(var30.toString());
+                }
+
+            }
+
+        }
+    }
 }

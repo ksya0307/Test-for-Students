@@ -157,13 +157,13 @@ public class Test {
         return id;
     }
 
-    public  void InsertTest(String name_test){
+    public  void InsertTest(String name_test, int amount){
 
         Connection con = null;
         PreparedStatement st = null;
         try {
             con = ORCLConnection.conn();
-            String sql = "insert into tests(test) values('"+name_test+"')";
+            String sql = "insert into tests(test, amount) values('"+name_test+"'," +amount+")";
 
             st = con.prepareStatement(sql);
             st.executeUpdate();
