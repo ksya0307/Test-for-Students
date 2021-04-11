@@ -41,7 +41,9 @@ public class getUserResult extends JFrame{
 
         try {
             con = ORCLConnection.conn();
-            String sql = "select tests.test as "+"Тест"+", results.result as "+"Результат "+" from results inner join tests on results.IDTEST=tests.ID where results.IDUSER="+id_user;
+            String sql = "select tests.test as "+"Тест"+", results.result as "+"Результат "+" from " +
+                    "results inner join " +
+                    "tests on results.IDTEST=tests.ID where results.IDUSER="+id_user;
             FillTable(UserTestsResult,sql,con);
             JScrollPane sp = new JScrollPane(UserTestsResult);
             frame.add(sp);
@@ -57,7 +59,7 @@ public class getUserResult extends JFrame{
         }
 
 
-
+        //Нажатие на кнопку назад
         choosetest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,6 +80,7 @@ public class getUserResult extends JFrame{
         {
             PreparedStatement stat = con.prepareStatement(Query);
             ResultSet rs = stat.executeQuery();
+            //Таблица заполняется из ResultSet при помощи установленного пакета
             table.setModel(DbUtils.resultSetToTableModel(rs));
 
             rs.close();

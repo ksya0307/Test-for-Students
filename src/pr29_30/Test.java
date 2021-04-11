@@ -126,25 +126,25 @@ public class Test {
         Connection con = null;
         Statement st = null;
         try {
+            //Подключение к БД
             con = ORCLConnection.conn();
+            //Запрос на вывод id теста с условием на название теста
             String sql = "select id from tests where test='"+ name_test+"'";
-
             st = con.createStatement();
+            //Получение результатов запроса
             ResultSet rs = st.executeQuery(sql);
-
             if(rs!=null){
                 while(rs.next())
                 {
                     this.id = rs.getInt("id");
+                    return id;
                 }
-
             }
             else System.out.println("Ошибочка!");
-
-
         } catch (SQLException | ClassNotFoundException var33) {
             System.out.println(var33.toString());
         } finally {
+            //Закрытие подключения
             if (con != null) {
                 try {
                     con.close();
@@ -154,7 +154,7 @@ public class Test {
                 }
             }
         }
-        return id;
+        return 0;
     }
 
     public  void InsertTest(String name_test){

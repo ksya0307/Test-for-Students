@@ -100,10 +100,12 @@ public class CheckResults extends JFrame{
                 int idtest = 0;
                 try
                 {
+                    //Цикл прогоняется по записям Map, чтобы найти нужного пользователя
                     for(Map.Entry<Integer, String> entry : usersMap.entrySet())
                     {
                         if(entry.getValue() == users.getSelectedItem().toString())
                         {
+                            //Если нужный пользователь найден, то вызывается форма с передачей параметра в виде id теста
                             iduser = entry.getKey();
                             System.out.println(iduser + "\t"+ test.getIdTest(solvedTests.getSelectedItem().toString()));
                             ReviewResult reviewResult = new ReviewResult(iduser,

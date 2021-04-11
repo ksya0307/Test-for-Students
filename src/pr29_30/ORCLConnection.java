@@ -3,7 +3,9 @@ package pr29_30;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+/*
+* По сути класс необходим для подключения к бд
+* он исключает постоянный ввод параметров подключения*/
 public class ORCLConnection {
     public static Connection conn() throws ClassNotFoundException {
         String hostname = "pcForOracle";

@@ -52,19 +52,19 @@ public class Answers {
     public void InsertIntoUserAnswers(int id_user, int id_answer){
         Connection con = null;
         PreparedStatement st = null;
-
-
         try {
+            //Подключеие к БД
             con = ORCLConnection.conn();
+            //Запрос на вставку записи в базу
             String sql = "insert into useranswers(iduser, idanswer) values("+id_user+", "+id_answer+")";
 
             st = con.prepareStatement(sql);
             st.executeUpdate();
 
-
         } catch (SQLException | ClassNotFoundException var33) {
             System.out.println(var33.toString());
         } finally {
+            //Закрытие подключения
             if (con != null) {
 
                 try {
@@ -72,9 +72,7 @@ public class Answers {
                 } catch (SQLException var30) {
                     System.out.println(var30.toString());
                 }
-
             }
-
         }
     }
 }

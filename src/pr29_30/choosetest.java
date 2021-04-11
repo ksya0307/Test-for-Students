@@ -52,6 +52,7 @@ public class choosetest extends JFrame{
                 thetest test = null;
 
                 try {
+                    //Получение id теста при помощи метода класса Test
                     int id_test = showtests.getIdTest(tests.getSelectedItem().toString());
                     test = new thetest(id_test, id_user);
                     frame.setVisible(false);

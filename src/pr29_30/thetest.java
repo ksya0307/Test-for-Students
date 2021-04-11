@@ -83,8 +83,7 @@ public class thetest extends JFrame{
 
             for (Map.Entry<Integer, String> entry_ans : answers.entrySet())
             {
-                answer = new JRadioButton();
-                answer.setText(entry_ans.getValue());
+                answer = new JRadioButton(entry_ans.getValue());
                 answer.setName(entry_ans.getKey().toString());
                 answer.setBounds(10, y, 600, 50);
                 y+=50;
@@ -108,24 +107,28 @@ public class thetest extends JFrame{
             rightanswers =0;
             for (int i1 = 0; i1 < btn_grp.length; i1++)
             {
+                //Цикл for проходит по элементам buttonGroup и записывает элемент в экземпляр класса AbstractButton
                 for (Enumeration<AbstractButton> buttons = btn_grp[i1].getElements(); buttons.hasMoreElements();) {
+                    //Получение каждого элемента buttonGroup
                     AbstractButton button = buttons.nextElement();
                     Answer ans = new Answer();
-                    //System.out.println(button.getName()+" name" + " q: "+quests[i1].getName());
-
                     try {
-
+                        //Проверка выбран ли данный RadioButton
                         if(button.isSelected()){
+                            //Вывод в консоль номера отвера и имя пользователя
                             System.out.println(button.getName() +" id ответа" + " user - " + id_user);
                             Answers insertAnswers = new Answers();
+                            //Вставка ответа в базу путем вывоза метода InsertIntoUserAnswers
                             insertAnswers.InsertIntoUserAnswers(id_user,Integer.parseInt(button.getName()));
+                            //Проверка ответа направильность
                             if(ans.isTrue(Integer.parseInt(button.getName()))){
-
-                                //System.out.println(button.getName()+" name" + " q: "+quests[i1].getName() + " answer "+ans.right);
+                                //Если правильный, то выделяется зеленым
                                 button.setBackground(Color.GREEN);
+                                //Счетчик правильных ответов
                                 rightanswers++;
                             }
                             else{
+                                //Неправильный выделяется красным
                                 button.setBackground(Color.RED);
                             }
                         }
@@ -136,9 +139,11 @@ public class thetest extends JFrame{
 
                 }
             }
+            //Показ количества правильных ответов
             JOptionPane.showMessageDialog(null,"Количество правильных ответов - "+rightanswers);
             checkresult.setEnabled(true);
             try {
+                //Вставка результата в базу через метод InsertResultUser
                 InsertResultUser(id_user,id_test,rightanswers);
                 submit.setEnabled(false);
             } catch (ClassNotFoundException classNotFoundException) {
@@ -176,33 +181,25 @@ public class thetest extends JFrame{
     }
 
     private void InsertResultUser(int id_user,int id_test, int result) throws ClassNotFoundException {
-
-
         Connection con = null;
         PreparedStatement st = null;
-
-
         try {
+            //Подключение к БД и запрос на вставку записи
             con = ORCLConnection.conn();
             String sql = "insert into results(iduser, idtest,result) values ("+this.id_user+", "+id_test+", "+rightanswers+")";
 
             st = con.prepareStatement(sql);
             st.executeUpdate();
-
-
         } catch (SQLException var33) {
             System.out.println(var33.toString());
         } finally {
             if (con != null) {
-
                 try {
                     con.close();
                 } catch (SQLException var30) {
                     System.out.println(var30.toString());
                 }
-
             }
-
         }
     }
 

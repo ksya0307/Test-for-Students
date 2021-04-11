@@ -47,19 +47,21 @@ public class tests extends JFrame{
         auth_btn.addActionListener(e -> {
             User user = new User();
             try {
-                boolean entered = user.enter(login.getText().toString(),passw.getText().toString());
-                if(entered){
+                //Вызов метода класса User на проверку правильности ввода пароля
+                if(user.enter(login.getText().toString(),passw.getText().toString())){
+                    //Успешный ввод логина и пароля
                     JOptionPane.showMessageDialog(null,"ОК!");
+                    //Проверка роли,
+                    //если роль равна 1 – то появится админ панель
                     if(user.role ==1){
                         AdminMainMenu mainMenu = new AdminMainMenu(user.id);
                     }
-                    else if(user.role==2){
+                    else if(user.role==2){ //если роль равна 2 – то появится форма выбора теста
                         choosetest showpage = new choosetest(user.id);
                     }
-
                     frame.setVisible(false);
                 }
-                else{
+                else{ //на случай, если пароль или логин введены неверно
                     JOptionPane.showMessageDialog(null,"Ошибка!");
                 }
             } catch (ClassNotFoundException classNotFoundException) {

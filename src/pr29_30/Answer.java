@@ -16,21 +16,23 @@ public class Answer
         Connection con = null;
         Statement st = null;
         try {
+            //Запрос на выборку
             String sql = "select right from answers where id="+ id_answer;
+            //Подключение к БД
             con = ORCLConnection.conn();
             st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-
             if(rs!=null)
             {
                 while(rs.next()){
-
+                    //Получаем значение из базы данных
                     this.right=rs.getString("right");
                 }
-
             }
             else System.out.println("Ошибочка!");
-
+            /*Прверяем, если полученное значение равно Y,
+            * то метод возвращает true,
+            * иначе – возвращает false*/
             if(this.right.equals("y"))
             {
                 return true;
@@ -38,7 +40,6 @@ public class Answer
             else {
                 return false;
             }
-
 
         } catch (SQLException var33) {
             System.out.println(var33.toString());

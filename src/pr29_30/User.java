@@ -15,17 +15,14 @@ public class User {
     public boolean enter( String login, String password) throws ClassNotFoundException {
         Connection con = null;
         Statement st = null;
-
-
         try {
+            //Подключение к БД
             con = ORCLConnection.conn();
+            //Построение запроса
             String sql = "select id,name,login,password,role from users where login='"+login+"'and password='"+password+"'";
-
-
-
             st = con.createStatement();
+            //Получение результата запроса в ResultSet
             ResultSet rs = st.executeQuery(sql);
-
             if(rs!=null){
                 while(rs.next()){
                     this.id=rs.getInt("id");
@@ -38,11 +35,10 @@ public class User {
                 }
             }
             else return false;
-
-
         } catch (SQLException var33) {
             System.out.println(var33.toString());
         } finally {
+            //Закрытие подключения
             if (con != null) {
 
                 try {
@@ -54,7 +50,6 @@ public class User {
         }
         return false;
     }
-
     public Map<Integer,String> getUsers()
     {
         Map<Integer,String> users = new HashMap<Integer,String>();
