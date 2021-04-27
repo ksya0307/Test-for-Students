@@ -38,6 +38,7 @@ public class getUserResult extends JFrame{
         Connection con = null;
         Statement st = null;
 
+        //коммент
 
         try {
             con = ORCLConnection.conn();

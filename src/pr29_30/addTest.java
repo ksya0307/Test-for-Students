@@ -150,14 +150,20 @@ public class addTest extends JFrame {
 
         addNameTest.addActionListener(e -> {
             Test addname  = new Test();
+            //добавляем данные о тесте через метод InsertTest
             addname.InsertTest(test_name.getText(), Integer.parseInt(amount_q.getText()));
+            //делаем кнопку недоступной
             addNameTest.setEnabled(false);
+            //получаем id теста по только что введенному названию теста(оно уникально)
+            // , чтобы используя его в БД добавлялись вопросы к этому Тесту
             new_id_test = addname.getIdTest(test_name.getText());
+            //делаем кнопку добавления вопроса доступной
             add_question.setEnabled(true);
 
         });
         add_question.addActionListener(e -> {
             Question addQtoTest = new Question();
+            //добавляем вопрос к созданному тесту через метод InsertQuestionTest
             addQtoTest.InsertQuestionTest(your_q.getText(),new_id_test);
         });
     }

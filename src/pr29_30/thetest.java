@@ -83,8 +83,7 @@ public class thetest extends JFrame{
 
             for (Map.Entry<Integer, String> entry_ans : answers.entrySet())
             {
-                answer = new JRadioButton();
-                answer.setText(entry_ans.getValue());
+                answer = new JRadioButton(entry_ans.getValue());
                 answer.setName(entry_ans.getKey().toString());
                 answer.setBounds(10, y, 600, 50);
                 y+=50;
