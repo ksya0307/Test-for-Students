@@ -38,8 +38,6 @@ public class getUserResult extends JFrame{
         Connection con = null;
         Statement st = null;
 
-        //коммент
-
         try {
             con = ORCLConnection.conn();
             String sql = "select tests.test as "+"Тест"+", results.result as "+"Результат "+" from results inner join tests on results.IDTEST=tests.ID where results.IDUSER="+id_user;
